@@ -20,7 +20,8 @@ const Index = () => {
       brand: 'PowerMax',
       power: '750W',
       category: 'drill',
-      image: '/img/891d0e8b-ad8c-4733-85ac-1bc5df69cf66.jpg',
+      image: '/img/d05b4176-d954-4ce3-b95c-77c1d97a36eb.jpg',
+      description: 'Мощная дрель с аккумулятором для профессиональных работ',
       rating: 4.8,
       inStock: true
     },
@@ -32,7 +33,8 @@ const Index = () => {
       brand: 'ProTool',
       power: '1200W',
       category: 'grinder',
-      image: '/img/c61e0cab-90b9-406c-89ea-9d8c5f98d808.jpg',
+      image: '/img/953c9185-d1da-4eb0-a853-59863d4e10d0.jpg',
+      description: 'Профессиональная УШМ для резки и шлифовки металла',
       rating: 4.9,
       inStock: true
     },
@@ -45,8 +47,48 @@ const Index = () => {
       power: '1500W',
       category: 'saw',
       image: '/img/c88d0ede-c05b-42ac-a3b6-7a1b6a7ce328.jpg',
+      description: 'Высокопроизводительная пила для точного реза',
       rating: 4.7,
       inStock: true
+    },
+    {
+      id: 4,
+      name: 'Перфоратор MegaDrill 850W',
+      price: 13500,
+      originalPrice: 16000,
+      brand: 'MegaDrill',
+      power: '850W',
+      category: 'drill',
+      image: '/img/d05b4176-d954-4ce3-b95c-77c1d97a36eb.jpg',
+      rating: 4.6,
+      inStock: true,
+      description: 'Мощный перфоратор для бетона и кирпича'
+    },
+    {
+      id: 5,
+      name: 'Болгарка CompactTool 900W',
+      price: 6500,
+      originalPrice: 8000,
+      brand: 'CompactTool',
+      power: '900W',
+      category: 'grinder',
+      image: '/img/953c9185-d1da-4eb0-a853-59863d4e10d0.jpg',
+      rating: 4.4,
+      inStock: false,
+      description: 'Компактная болгарка для домашних работ'
+    },
+    {
+      id: 6,
+      name: 'Лобзик PrecisionCut 650W',
+      price: 7200,
+      originalPrice: 9000,
+      brand: 'PrecisionCut',
+      power: '650W',
+      category: 'saw',
+      image: '/img/c88d0ede-c05b-42ac-a3b6-7a1b6a7ce328.jpg',
+      rating: 4.5,
+      inStock: true,
+      description: 'Точный лобзик для фигурной резки дерева'
     }
   ];
 
@@ -146,6 +188,9 @@ const Index = () => {
                   <SelectItem value="PowerMax">PowerMax</SelectItem>
                   <SelectItem value="ProTool">ProTool</SelectItem>
                   <SelectItem value="ElectroMax">ElectroMax</SelectItem>
+                  <SelectItem value="MegaDrill">MegaDrill</SelectItem>
+                  <SelectItem value="CompactTool">CompactTool</SelectItem>
+                  <SelectItem value="PrecisionCut">PrecisionCut</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -158,7 +203,10 @@ const Index = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Любая мощность</SelectItem>
+                  <SelectItem value="650W">650W</SelectItem>
                   <SelectItem value="750W">750W</SelectItem>
+                  <SelectItem value="850W">850W</SelectItem>
+                  <SelectItem value="900W">900W</SelectItem>
                   <SelectItem value="1200W">1200W</SelectItem>
                   <SelectItem value="1500W">1500W</SelectItem>
                 </SelectContent>
@@ -191,9 +239,13 @@ const Index = () => {
                     <Badge className="absolute top-2 right-2 bg-red-500 text-white">
                       -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
                     </Badge>
-                    {product.inStock && (
+                    {product.inStock ? (
                       <Badge className="absolute top-2 left-2 bg-green-500 text-white">
                         В наличии
+                      </Badge>
+                    ) : (
+                      <Badge className="absolute top-2 left-2 bg-gray-500 text-white">
+                        Нет в наличии
                       </Badge>
                     )}
                   </div>
@@ -201,6 +253,8 @@ const Index = () => {
                   <h4 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
                     {product.name}
                   </h4>
+                  
+                  <p className="text-sm text-gray-600 mb-3">{product.description}</p>
                   
                   <div className="flex items-center mb-2">
                     <div className="flex text-yellow-400">
@@ -233,12 +287,39 @@ const Index = () => {
                   <Button
                     className="w-full bg-gradient-brand text-white hover:opacity-90"
                     onClick={addToCart}
+                    disabled={!product.inStock}
                   >
                     <Icon name="ShoppingCart" size={20} className="mr-2" />
-                    В корзину
+                    {product.inStock ? 'В корзину' : 'Товар закончился'}
                   </Button>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+          
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <Icon name="Package" size={64} className="mx-auto text-gray-400 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">Товары не найдены</h3>
+              <p className="text-gray-500">Попробуйте изменить параметры фильтрации</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Brands */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h3 className="text-3xl font-bold text-center mb-12">Наши бренды</h3>
+          
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+            {['PowerMax', 'ProTool', 'ElectroMax', 'MegaDrill', 'CompactTool', 'PrecisionCut'].map((brand) => (
+              <div key={brand} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow text-center">
+                <div className="bg-gradient-brand p-3 rounded-full w-12 h-12 mx-auto mb-3">
+                  <Icon name="Wrench" size={24} className="text-white" />
+                </div>
+                <h4 className="font-semibold text-gray-800">{brand}</h4>
+              </div>
             ))}
           </div>
         </div>
